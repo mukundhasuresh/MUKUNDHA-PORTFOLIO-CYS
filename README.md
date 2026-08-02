@@ -1,16 +1,54 @@
-# React + Vite
+# Mukundha Suresh - Cybersecurity Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern, interactive, and dark-themed portfolio built for showcasing my experience, skills, and projects as an aspiring SOC Analyst and Cybersecurity Graduate. Built from the ground up using React, Vite, and Framer Motion for smooth, high-fidelity animations.
 
-Currently, two official plugins are available:
+## 🚀 Live Preview
+*(Live URL will go here once deployed)*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Key Features
+- **Dark Glassmorphism UI:** A sleek, futuristic dark mode aesthetic with glass-pane components.
+- **Interactive Animations:** Utilizes Framer Motion for scroll-based reveals, parallax effects, and floating elements.
+- **Dynamic Projects & Resume:** Fully centralized data architecture (`src/data.js`) allows for instant updates to projects, skills, certifications, and experience.
+- **Custom Cyber Graphics:** Integrated ASCII art effects, matrix text animations, and wireframe backgrounds.
+- **Web3Forms Contact Integration:** Built-in contact form ready to deploy serverlessly.
 
-## React Compiler
+## 🛠️ Tech Stack
+- **Frontend Framework:** React 18
+- **Build Tool:** Vite
+- **Styling:** Vanilla CSS (Glassmorphism design system)
+- **Animations:** Framer Motion
+- **Icons:** Lucide React & React Icons
+- **Routing:** React Router DOM
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📦 Installation & Setup
 
-## Expanding the Oxlint configuration
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/mukundhasuresh/MUKUNDHA-PORTFOLIO-CYS.git
+   cd MUKUNDHA-PORTFOLIO-CYS
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+## 📂 Project Structure
+- `src/components/` - Reusable UI components (Navbars, Cards, Badges, etc.)
+- `src/pages/` - Main views (Home, Projects, Skills, Contact)
+- `src/data.js` - Single source of truth for portfolio content (Experience, Education, Projects)
+- `src/index.css` - Global styles and CSS variables
+- `public/` - Static assets, images, and resume PDF
+
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).

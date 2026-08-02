@@ -8,6 +8,8 @@ import { Typewriter } from 'react-simple-typewriter';
 import SkillBadge from '../components/SkillBadge';
 import { SiSplunk, SiWireshark, SiLinux } from 'react-icons/si';
 import { Shield, ShieldAlert, Terminal, Activity, Globe, Crosshair, Search, Cloud, Monitor, Eye, Flame, Mail, Share2, Code, Bot } from 'lucide-react';
+import ResumeSection from '../components/ResumeSection';
+
 
 const FadeIn = ({ children, delay = 0, y = 50 }) => (
   <motion.div
@@ -60,7 +62,7 @@ const Home = () => {
   };
 
   return (
-    <div style={{ paddingBottom: '100px' }}>
+    <div>
       
       {/* 1. HERO SECTION WITH CURSOR TRAIL */}
       <CursorStickerTrail>
@@ -285,6 +287,10 @@ const Home = () => {
         </FadeIn>
       </section>
 
+      {/* 4.5. RESUME / EXPERIENCE SECTION */}
+      <ResumeSection />
+
+
       {/* 5. CONTACT FOOTER WITH ASCII HANDS */}
       <section className="section" style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         
@@ -359,7 +365,56 @@ const Home = () => {
           </div>
         </FadeIn>
       </section>
+      {/* 6. HERO-STYLE FOOTER */}
+      <footer className="section" style={{ 
+        position: 'relative',
+        padding: '120px 0 120px', 
+        textAlign: 'center',
+        background: 'var(--bg-primary)',
+        overflow: 'hidden'
+      }}>
+        {/* Wireframe Background */}
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: 'url(/images/footer-bg-wireframe.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          filter: 'invert(1) opacity(0.2)', // Inverts the white background to black, making the lines white!
+          zIndex: 1,
+          pointerEvents: 'none'
+        }} />
+        <FadeIn>
+          <div className="container" style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '40px' }}>
+            
+            <div style={{ textAlign: 'center', zIndex: 10 }}>
+              <h1 className="title-hero" style={{ marginBottom: '16px', textShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+                {data.personal.name}
+              </h1>
+              <h2 style={{ fontSize: '24px', color: 'var(--text-secondary)', fontWeight: 400 }}>
+                {data.personal.role}
+              </h2>
+            </div>
 
+            <div style={{ display: 'flex', gap: '24px', marginTop: '10px' }}>
+              <motion.a href="https://github.com/mukundhasuresh" target="_blank" rel="noreferrer" whileHover={{ y: -3, color: 'var(--accent-color)' }} style={{ color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+                <Code size={24} />
+              </motion.a>
+              <motion.a href="https://linkedin.com/in/mukundhasuresh" target="_blank" rel="noreferrer" whileHover={{ y: -3, color: 'var(--accent-color)' }} style={{ color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+                <Globe size={24} />
+              </motion.a>
+              <motion.a href="mailto:mukundhasuresh@gmail.com" whileHover={{ y: -3, color: 'var(--accent-color)' }} style={{ color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+                <Mail size={24} />
+              </motion.a>
+            </div>
+
+            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '20px', opacity: 0.6 }}>
+              &copy; {new Date().getFullYear()} {data.personal.name}. All rights reserved.
+            </div>
+          </div>
+        </FadeIn>
+      </footer>
     </div>
   );
 };
