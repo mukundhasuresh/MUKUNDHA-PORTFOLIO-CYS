@@ -174,25 +174,233 @@ export const data = {
   ],
   projects: [
     {
+      id: "soc-lab",
+      title: "SOC Detection Engineering Lab",
+      subtitle: "MITRE ATT&CK-mapped attack telemetry & Sigma Rules",
+      description: "A detection engineering project built against real, MITRE ATT&CK-mapped attack telemetry — 6 custom Sigma rules, confirmed true positive alerts, 3 incident response reports, and a SOAR containment playbook.",
+      repo: "https://github.com/mukundhasuresh/SOC-LAB",
+      longDescription: `A detection engineering project built against real, MITRE ATT&CK-mapped attack telemetry — 6 custom Sigma rules, confirmed true positive alerts, 3 incident response reports, and a SOAR containment playbook.
+
+### Detection Coverage
+
+| Technique | ATT&CK ID | Sigma Rule | Alert Result | IR Report |
+| :--- | :---: | :--- | :--- | :--- |
+| Process Memory Access (Credential Dump) | T1003 | [rule](https://github.com/mukundhasuresh/SOC-LAB/blob/main/detections/T1003_credential_dumping/sigma_rule.yml) | ✅ 1 alert fired | [IR-001](https://github.com/mukundhasuresh/SOC-LAB/blob/main/ir-reports/IR-001-credential-dumping.md) |
+| Kerberos Pre-Auth Failure (Password Spray) | T1558 | [rule](https://github.com/mukundhasuresh/SOC-LAB/blob/main/detections/T1558_kerberoasting/sigma_rule.yml) | ✅ 2 alerts fired | [IR-002](https://github.com/mukundhasuresh/SOC-LAB/blob/main/ir-reports/IR-002-kerberoasting.md) |
+| Pass-the-Hash (Special Privilege Logon) | T1550 | [rule](https://github.com/mukundhasuresh/SOC-LAB/blob/main/detections/T1550_pass_the_hash/sigma_rule.yml) | ✅ 1 alert fired | — |
+| Process Injection (CreateRemoteThread) | T1055 | [rule](https://github.com/mukundhasuresh/SOC-LAB/blob/main/detections/T1055_process_injection/sigma_rule.yml) | ✅ 1 alert fired | — |
+| Obfuscated PowerShell (Script Block) | T1059 | [rule](https://github.com/mukundhasuresh/SOC-LAB/blob/main/detections/T1059_powershell/sigma_rule.yml) | ✅ 1 alert fired | — |
+| Lateral Movement via PsExec Named Pipe | T1021 | [rule](https://github.com/mukundhasuresh/SOC-LAB/blob/main/detections/T1021_lateral_movement/sigma_rule.yml) | ✅ 1 alert fired | [IR-003](https://github.com/mukundhasuresh/SOC-LAB/blob/main/ir-reports/IR-003-lateral-movement.md) |
+
+### How to Reproduce
+
+\`\`\`bash
+# 1. Clone the repo
+git clone https://github.com/mukundhasuresh/SOC-LAB.git
+cd SOC-LAB
+
+# 2. Install dependencies
+pip install python-evtx
+# Download Zircolite from https://github.com/wagga40/Zircolite/releases
+
+# 3. Download attack telemetry datasets (git-ignored, stays local)
+bash scripts/fetch_datasets.sh
+
+# 4. Run all Sigma rules against the datasets
+bash scripts/run_detections.sh
+\`\`\`
+
+### Project Structure
+
+\`\`\`text
+soc-detection-lab/
+├── detections/    # 6 Sigma rules + evidence per technique
+├── ir-reports/    # 3 full incident response reports
+├── soar/          # Shuffle SOAR playbook for automated containment
+├── datasets/      # Dataset manifest + fetch script
+├── scripts/       # fetch_datasets.sh + run_detections.sh
+└── docs/          # Architecture diagram + methodology
+\`\`\`
+
+### Key Design Decisions
+
+*   **No VMs, no Splunk Enterprise — by design.** This project uses real, pre-recorded MITRE ATT&CK-mapped attack telemetry and runs detection rules with Zircolite, a standalone Sigma engine. Any reviewer can clone this repo and reproduce every detection in under 10 minutes on any OS. See [docs/methodology.md](https://github.com/mukundhasuresh/SOC-LAB/blob/main/docs/methodology.md).
+*   **Sigma over vendor-specific queries** — Sigma rules are portable across Splunk, Elastic, Microsoft Sentinel, and QRadar. Writing vendor-neutral rules is the current SOC industry standard for detection engineering.
+*   **Evidence is verified, not claimed** — every \`test_evidence.md\` contains real Zircolite JSON output from running the rule against the actual EVTX sample.
+*   **No personal or system data committed** — gitleaks pre-commit hook runs on every commit. All evidence files use placeholder hostnames (WKSTN01, WKSTN02), usernames (jdoe), and domains (corp.local). See [docs/methodology.md](https://github.com/mukundhasuresh/SOC-LAB/blob/main/docs/methodology.md).
+
+### Tools & References
+
+| Tool | Purpose | Link |
+| :--- | :--- | :--- |
+| Sigma | Detection rule format | github.com/SigmaHQ/sigma |
+| Zircolite | Sigma-on-EVTX engine | github.com/wagga40/Zircolite |
+| EVTX-ATTACK-SAMPLES | Attack telemetry datasets | github.com/sbousseaden/EVTX-ATTACK-SAMPLES |
+| Shuffle | SOAR platform | shuffler.io |
+| Gitleaks | Secret scanning | github.com/gitleaks/gitleaks |
+| MITRE ATT&CK | Threat framework | attack.mitre.org |
+`
+    },
+    {
       id: "androsec-audit",
       title: "AndroSec Audit",
       subtitle: "Android APK Penetration Test",
       description: "End-to-end static and dynamic security assessment of a vulnerable Android banking application using MobSF and Burp Suite. Uncovered 14 findings across all 10 OWASP Mobile Top 10 categories.",
-      repo: "https://github.com/mukundhasuresh/AndroSec-Audit"
+      repo: "https://github.com/mukundhasuresh/AndroSec-Audit",
+      longDescription: `An end-to-end Android APK penetration test using MobSF and Burp Suite — performed entirely on Windows.
+
+### Project Overview
+
+This project demonstrates a complete, structured penetration test of an Android application using industry-standard tools and methodology. The target application — InsecureBankv2 — is a deliberately vulnerable Android banking app designed for security research and education.
+
+The entire lab was set up natively on Windows 11 — no Linux VM, no WSL required. MobSF runs in a Docker container, and everything else (Android emulator, Burp Suite, ADB) runs natively.
+
+### Objectives
+
+*   Perform static analysis of an Android APK to identify code-level, configuration, and certificate vulnerabilities.
+*   Perform dynamic analysis by intercepting live HTTPS traffic and inspecting runtime behaviour.
+*   Map all findings to the OWASP Mobile Top 10 framework.
+*   Produce a professional penetration test report.
+
+### Tools & Stack
+
+| Tool | Version | Purpose |
+| :--- | :--- | :--- |
+| MobSF | v4.5.1 | Automated static + dynamic analysis framework |
+| Burp Suite Community | Latest | HTTP/HTTPS intercepting proxy |
+| Docker Desktop | Latest | MobSF containerised deployment on Windows |
+| Android SDK CLI Tools | Latest | Emulator management (no Android Studio needed) |
+| Android Emulator | API 30, x86_64 | Runtime testing sandbox |
+| ADB (Platform Tools) | 37.0.0 | Device communication, cert installation |
+| JADX | v1.5.0 | Manual APK decompilation and code review |
+
+### Vulnerability Findings Summary
+
+A total of 14 findings were uncovered across all 10 OWASP Mobile Top 10 categories.
+
+| Severity | Count |
+| :--- | :--- |
+| Critical | 2 |
+| High | 7 |
+| Medium | 4 |
+| Low | 1 |
+
+#### Critical Findings
+*   **Cleartext Credential Transmission (M3 - Insecure Communication):** Login credentials transmitted over HTTP with no TLS. Burp Suite intercepted a POST request with trivially reversible Base64-encoded credentials.
+*   **Hardcoded Secrets in APK (M8 - Code Tampering):** MobSF detected 25 possible hardcoded secrets in APK resources including cryptographic key material and plaintext credential string keys.
+
+#### High Findings (Selected)
+*   **Debug Mode Enabled:** Allows attacker to attach a debugger at runtime and dump memory.
+*   **Janus Vulnerability (CVE-2017-13156):** App signed with v1 signature only, allowing an attacker to prepend malicious DEX code.
+*   **StrandHogg 2.0 Task Hijacking:** Activities vulnerable to overlay phishing attacks.
+*   **Insecure Local Storage:** Username, password, and session tokens stored in plaintext SharedPreferences.
+*   **Weak Cryptography:** Usage of broken DES (56-bit) encryption and ECB mode.
+*   **Authentication Bypass:** Activities exported without permission requirements.
+
+### Key Learnings
+
+**Static Analysis**
+*   How MobSF decompiles and analyses an APK without running it.
+*   Why \`android:debuggable=true\` and \`android:allowBackup=true\` are dangerous in production.
+*   What exported activities without permission checks enable an attacker to do.
+
+**Dynamic Analysis**
+*   How Burp Suite acts as a Man-in-the-Middle proxy for mobile traffic.
+*   How to configure proxy routing for Android emulators.
+*   How to install a CA certificate as trusted on Android to decrypt HTTPS.
+
+**Methodology**
+*   The difference between SAST and DAST in mobile contexts.
+*   How to map findings to OWASP Mobile Top 10 categories.
+*   How a professional pentest report is structured (finding -> evidence -> impact -> remediation).`
     },
     {
       id: "windows-log-anomaly",
       title: "Windows Log Anomaly Detector",
       subtitle: "ML-powered Security Tool",
       description: "Reads Windows Security Event Logs in real time and flags suspicious activity (e.g., failed logins, off-hours access) using an Isolation Forest model, with severity-based alerting and a live Streamlit dashboard.",
-      repo: "https://github.com/mukundhasuresh/windows-log-anomaly-detector"
+      repo: "https://github.com/mukundhasuresh/windows-log-anomaly-detector",
+      longDescription: `An ML-powered security tool that detects anomalies in Windows Event Logs in real time.
+
+### Features
+
+*   **Event Monitoring:** Reads Windows Security Event Logs (Event IDs 4624, 4625, 4672, 4720, 4740).
+*   **ML Detection:** Utilizes an Isolation Forest ML model for statistical anomaly detection.
+*   **Alerting System:** Severity-based alerting (HIGH / MEDIUM / LOW) with Windows desktop notifications for HIGH alerts.
+*   **Live Dashboard:** Interactive Streamlit dashboard with live charts.
+*   **CLI Interface:** Built-in CLI interface for automation and scripting.
+
+### Tech Stack
+
+| Component | Technology |
+| :--- | :--- |
+| Event Log Access | Python + \`pywin32\` |
+| ML Detection | \`scikit-learn\` Isolation Forest |
+| Dashboard | Streamlit |
+| CLI Interface | \`rich\` |
+| Notifications | \`plyer\` |
+
+### How It Works
+
+1.  **LogReader:** Pulls Windows Security events via \`pywin32\`.
+2.  **AnomalyDetector:** Engineers features such as failed logins/hour, off-hours activity, and unique IPs.
+3.  **Isolation Forest:** Flags statistical outliers as anomalies.
+4.  **AlertManager:** Classifies severity and sends notifications.
+5.  **Streamlit Dashboard:** Visualizes the entire pipeline in real time.
+
+### Usage
+
+\`\`\`bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run detection once (Requires Administrator privileges)
+python main.py --mode detect
+
+# Launch interactive dashboard
+python main.py --mode dashboard
+\`\`\`
+
+### Gallery
+
+![CLI Interface Run 1](/images/windows-log/media_1785783107483.png)
+![Streamlit Dashboard](/images/windows-log/media_1785783455990.png)
+![CLI Interface Run 2](/images/windows-log/media_1785783467398.png)
+`
     },
     {
       id: "pentest-lab",
       title: "Penetration Testing Lab",
       subtitle: "OWASP Juice Shop",
       description: "A Dockerized black-box pentest lab pairing OWASP Juice Shop with OWASP ZAP, covering baseline, authenticated, and full active scans alongside manual exploitation of vulnerabilities.",
-      repo: "https://github.com/mukundhasuresh/Penetration-testing-OWASP-juice-shop"
+      repo: "https://github.com/mukundhasuresh/Penetration-testing-OWASP-juice-shop",
+      longDescription: `A Docker-based web application penetration testing lab using OWASP Juice Shop as the intentionally vulnerable target application and OWASP ZAP for automated vulnerability scanning. This project demonstrates a complete black-box penetration testing workflow from environment setup to final report generation.
+
+### Project Overview
+
+This lab simulates a real-world penetration testing engagement against a vulnerable web application. The entire environment runs locally using Docker, requiring no cloud infrastructure. The project covers automated scanning, authenticated scanning, and manual exploitation of common web vulnerabilities mapped to the OWASP Top 10.
+
+### Phases
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Repo scaffolding | Done |
+| 1 | Juice Shop Docker setup | Done |
+| 2 | ZAP container and baseline scan | Done |
+| 3 | Automated scan script with timestamped reports | Done |
+| 4 | Authenticated active scan | Done |
+| 5 | Manual vulnerability walkthrough | Done |
+| 6 | Final penetration test report | Done |
+
+### Vulnerabilities Covered
+
+| ID | Title | OWASP Category | Severity |
+|----|-------|---------------|----------|
+| F1 | SQL Injection Login Bypass | A03:2021 Injection | Critical |
+| F2 | Reflected XSS in Search Bar | A03:2021 Injection | High |
+| F3 | Broken Authentication via Weak Credentials | A07:2021 Auth Failures | High |
+| F4 | IDOR on Basket API | A01:2021 Broken Access Control | Medium |
+| F5 | Exposed Admin Panel | A05:2021 Security Misconfiguration | Medium |`
     },
     {
       id: "secure-devops",
@@ -200,7 +408,29 @@ export const data = {
       subtitle: "Full-Stack Security Platform",
       description: "Platform built to weave automated vulnerability scanning directly into the CI/CD lifecycle, using containerized environments and security-first workflows.",
       repo: "https://github.com/mukundhasuresh/Securepipeline-backend",
-      live: "https://github.com/mukundhasuresh/Securepipeline-frontend"
+      live: "https://github.com/mukundhasuresh/Securepipeline-frontend",
+      longDescription: `A comprehensive platform built to weave automated vulnerability scanning directly into the CI/CD lifecycle, using containerized environments and security-first workflows.
+
+### Project Overview
+
+This project demonstrates the implementation of a true DevSecOps pipeline. By integrating security tools directly into the continuous integration and deployment process, vulnerabilities are caught early in the development lifecycle (Shift-Left Security) rather than during post-deployment audits.
+
+### Key Features
+
+*   **Automated SAST:** Static Application Security Testing integrated directly into pull requests.
+*   **Dynamic Analysis (DAST):** Automated runtime scanning against containerized staging environments.
+*   **Container Security:** Image scanning for outdated dependencies and known CVEs before registry push.
+*   **Infrastructure as Code (IaC):** Automated deployment configurations securely managed and audited.
+*   **Actionable Reporting:** Security findings automatically block builds based on severity thresholds and generate detailed reports.
+
+### Tech Stack
+
+| Component | Technology |
+| :--- | :--- |
+| CI/CD Pipeline | GitHub Actions / GitLab CI |
+| Containerization | Docker |
+| Security Scanning | SonarQube, Trivy, OWASP ZAP |
+| Frontend | React + Vite |`
     },
     {
       id: "resellshield",
@@ -208,7 +438,31 @@ export const data = {
       subtitle: "Trust-first Resale Marketplace",
       description: "Modern React-based frontend for a resale marketplace enabling secure electronics trading. Features AI trust score visualization, blockchain-inspired transparency, and role-based access.",
       repo: "https://github.com/mukundhasuresh/resellshield-frontend",
-      live: "https://resellshield-frontend.vercel.app/"
+      live: "https://resellshield-frontend.vercel.app/",
+      longDescription: `ReSellShield is a trust-first resale marketplace UI built with React and Vite. It connects to a backend API to provide a secure and transparent electronics trading platform.
+
+### Core Features
+
+*   **Marketplace Experience:** Clean product grid layout with trust badges and risk-level color indicators.
+*   **Search, Filter & Sort:** Dynamic filtering by condition, price range, and availability.
+*   **Product Detail Page:** Displays device details, trust score visualization, and blockchain-inspired ownership transparency.
+*   **Authentication:** Cookie-based JWT with role-based dashboards (Buyer / Seller / Admin).
+
+### AI Trust Assistant
+
+A context-aware chatbot integrated directly into the purchase flow:
+*   Explains trust scores and risk levels.
+*   Breaks down ownership history and warranty validity.
+*   Responds based on real backend trust data (Explainable, rule-based AI).
+
+### Tech Stack
+
+| Technology | Purpose |
+| :--- | :--- |
+| React (Vite) | Frontend Framework |
+| Tailwind CSS | Styling |
+| Axios | API Integration |
+| Context / Reducer | State Management |`
     },
     {
       id: "branch-loan",
@@ -216,7 +470,34 @@ export const data = {
       subtitle: "Fintech Platform",
       description: "Full-stack fintech platform for intelligent loan management with dynamic fraud detection, multi-level workflows, notifications, analytics, and secure JWT authentication.",
       repo: "https://github.com/mukundhasuresh/branch-loan-frontend",
-      live: "https://branch-loan-frontend.vercel.app/"
+      live: "https://branch-loan-frontend.vercel.app/",
+      longDescription: `A modern, production-ready fintech dashboard for intelligent loan management, fraud detection, and real-time financial analytics.
+
+Branch Loan is designed as a startup-grade banking platform that automates loan workflows, detects suspicious financial activity, and provides deep insights through powerful dashboards and live monitoring.
+
+### Why This Project is Unique
+
+Most loan management projects focus only on CRUD operations. Branch Loan goes beyond that by implementing real-world banking concepts such as:
+*   Fraud detection with dynamic risk scoring
+*   Multi-role loan approval workflow
+*   Real-time notifications and advanced analytics
+*   Secure authentication with HTTP-only cookies
+
+### Key Features
+
+*   **Authentication & Security:** Secure cookie-based JWT authentication and role-based access control.
+*   **Fraud Detection & Risk Monitoring:** Dynamic fraud scoring, high-risk loan flagging, and a dedicated fraud dashboard.
+*   **Loan Workflow Automation:** Employee -> Manager -> Admin approval flow and automated decision pipelines.
+*   **Real-Time Notifications:** Instant fraud alerts and live system monitoring using WebSockets.
+
+### Tech Stack
+
+| Technology | Purpose |
+| :--- | :--- |
+| React (Vite) | Frontend Framework |
+| Tailwind CSS | UI Styling |
+| Recharts | Analytics Visualizations |
+| Socket.IO Client | Real-time events |`
     }
   ]
 };
