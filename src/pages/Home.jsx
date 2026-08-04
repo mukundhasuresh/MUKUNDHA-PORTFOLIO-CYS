@@ -8,7 +8,7 @@ import { Typewriter } from 'react-simple-typewriter';
 import SkillBadge from '../components/SkillBadge';
 import ProjectCard from '../components/ProjectCard';
 import { SiSplunk, SiWireshark, SiLinux } from 'react-icons/si';
-import { Shield, ShieldAlert, Terminal, Activity, Globe, Crosshair, Search, Cloud, Monitor, Eye, Flame, Mail, Share2, Code, Bot } from 'lucide-react';
+import { Shield, ShieldAlert, Terminal, Activity, Globe, Crosshair, Search, Cloud, Monitor, Eye, Flame, Mail, Share2, Code, Bot, Download } from 'lucide-react';
 import ResumeSection from '../components/ResumeSection';
 
 
@@ -70,9 +70,43 @@ const Home = () => {
         <section className="min-h-screen flex-center" style={{ position: 'relative' }}>
           <motion.div style={{ y, opacity, textAlign: 'center', zIndex: 10, pointerEvents: 'auto' }}>
             <h1 className="title-hero" style={{ marginBottom: '16px', textShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>{data.personal.name}</h1>
-            <h2 style={{ fontSize: '24px', color: 'var(--text-secondary)', fontWeight: 400 }}>
+            <h2 style={{ fontSize: '24px', color: 'var(--text-secondary)', fontWeight: 400, marginBottom: '32px' }}>
               {data.personal.role}
             </h2>
+            <a 
+              href="/resume.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="glass-card"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 28px',
+                background: 'rgba(41, 151, 255, 0.1)',
+                border: '1px solid rgba(41, 151, 255, 0.3)',
+                color: 'var(--accent-color)',
+                borderRadius: '30px',
+                fontWeight: '600',
+                fontSize: '16px',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = 'var(--accent-color)';
+                e.currentTarget.style.color = '#000';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(41,151,255,0.5)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'rgba(41, 151, 255, 0.1)';
+                e.currentTarget.style.color = 'var(--accent-color)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <Download size={18} />
+              Download Resume
+            </a>
           </motion.div>
         </section>
       </CursorStickerTrail>

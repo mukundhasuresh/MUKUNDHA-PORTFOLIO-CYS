@@ -7,6 +7,7 @@ import Contact from './pages/Contact';
 import ProjectDetail from './pages/ProjectDetail';
 import ProjectsIndex from './pages/ProjectsIndex';
 import Skills from './pages/Skills';
+import { Analytics } from '@vercel/analytics/react';
 import './index.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/skills" element={<Skills />} />
       </Routes>
       <FooterNav />
+      <Analytics />
     </Router>
   );
 }
