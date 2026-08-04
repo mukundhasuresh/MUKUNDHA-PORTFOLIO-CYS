@@ -225,7 +225,7 @@ const Home = () => {
         </FadeIn>
         
         <div className="card-grid-4">
-          {data.projects.slice(0, 4).map((project, i) => (
+          {data.projects.map((project, i) => (
             <FadeIn key={project.id} delay={i * 0.1}>
               <ProjectCard project={project} />
             </FadeIn>
