@@ -374,32 +374,26 @@ python main.py --mode dashboard
       subtitle: "OWASP Juice Shop",
       description: "A Dockerized black-box pentest lab pairing OWASP Juice Shop with OWASP ZAP, covering baseline, authenticated, and full active scans alongside manual exploitation of vulnerabilities.",
       repo: "https://github.com/mukundhasuresh/Penetration-testing-OWASP-juice-shop",
-      longDescription: `A Docker-based web application penetration testing lab using OWASP Juice Shop as the intentionally vulnerable target application and OWASP ZAP for automated vulnerability scanning. This project demonstrates a complete black-box penetration testing workflow from environment setup to final report generation.
+      longDescription: `A comprehensive Docker-based web application penetration testing lab using OWASP Juice Shop as the vulnerable target. This project demonstrates a structured, black-box penetration testing workflow from reconnaissance to final exploitation and report generation.
 
 ### Project Overview
+Modern web applications require rigorous testing methodologies to uncover hidden vulnerabilities. This lab simulates a real-world engagement by deploying the target in an isolated Docker container, ensuring a repeatable and secure testing environment without the need for cloud infrastructure.
 
-This lab simulates a real-world penetration testing engagement against a vulnerable web application. The entire environment runs locally using Docker, requiring no cloud infrastructure. The project covers automated scanning, authenticated scanning, and manual exploitation of common web vulnerabilities mapped to the OWASP Top 10.
+### Methodology & Execution
+The engagement was structured to follow professional penetration testing phases:
 
-### Phases
+*   **Reconnaissance & Baseline:** Executed unauthenticated spidering and passive scanning using OWASP ZAP to map the application's attack surface and identify exposed endpoints.
+*   **Authenticated Scanning:** Configured ZAP to handle session tokens and authentication headers, allowing deep dynamic application security testing (DAST) against restricted API routes.
+*   **Manual Exploitation:** Validated automated findings and manually exploited complex logic flaws that scanners typically miss, such as horizontal privilege escalation.
 
-| Phase | Description | Status |
-|-------|-------------|--------|
-| 0 | Repo scaffolding | Done |
-| 1 | Juice Shop Docker setup | Done |
-| 2 | ZAP container and baseline scan | Done |
-| 3 | Automated scan script with timestamped reports | Done |
-| 4 | Authenticated active scan | Done |
-| 5 | Manual vulnerability walkthrough | Done |
-| 6 | Final penetration test report | Done |
+### Exploitation Deep Dive
 
-### Vulnerabilities Covered
+*   **SQL Injection (Login Bypass):** Successfully bypassed the authentication portal by injecting `' OR 1=1 --` into the email field. This forced the backend SQLite database to evaluate the query as true, logging in as the first user in the table (Admin).
+*   **Broken Access Control (IDOR):** Intercepted API requests to the basket endpoint (`/api/BasketItems/`) and manipulated the Basket ID parameter. The backend failed to authorize the request against the active session, allowing the viewing and modification of other users' shopping carts.
+*   **Reflected XSS:** Injected a malicious payload `<iframe src="javascript:alert(`xss`)">` into the search query. The server reflected the unescaped input directly into the DOM, executing the script in the context of the victim's browser session.
 
-| ID | Title | OWASP Category | Severity |
-|----|-------|---------------|----------|
-| F1 | SQL Injection Login Bypass | A03:2021 Injection | Critical |
-| F2 | Reflected XSS in Search Bar | A03:2021 Injection | High |
-| F3 | Broken Authentication via Weak Credentials | A07:2021 Auth Failures | High |
-| F4 | IDOR on Basket API | A01:2021 Broken Access Control | Medium |
+### Impact & Reporting
+All vulnerabilities were mapped to the OWASP Top 10 framework, categorized by severity using the CVSS scoring system, and compiled into a final penetration test report detailing the findings, evidence (HTTP requests/responses), business impact, and remediation steps.
 | F5 | Exposed Admin Panel | A05:2021 Security Misconfiguration | Medium |`
     },
     {
@@ -409,28 +403,27 @@ This lab simulates a real-world penetration testing engagement against a vulnera
       description: "Platform built to weave automated vulnerability scanning directly into the CI/CD lifecycle, using containerized environments and security-first workflows.",
       repo: "https://github.com/mukundhasuresh/Securepipeline-backend",
       live: "https://github.com/mukundhasuresh/Securepipeline-frontend",
-      longDescription: `A comprehensive platform built to weave automated vulnerability scanning directly into the CI/CD lifecycle, using containerized environments and security-first workflows.
+      longDescription: `A comprehensive DevSecOps platform built to weave automated vulnerability scanning and security gates directly into the CI/CD lifecycle, promoting a Shift-Left security culture.
 
-### Project Overview
+### Architecture Breakdown
 
-This project demonstrates the implementation of a true DevSecOps pipeline. By integrating security tools directly into the continuous integration and deployment process, vulnerabilities are caught early in the development lifecycle (Shift-Left Security) rather than during post-deployment audits.
+In a traditional DevOps pipeline, security is often treated as an afterthought. This project integrates security natively into the deployment workflow:
+1.  **Code Commit (SAST):** Every pull request triggers a SonarQube static analysis scan. This catches hardcoded secrets, weak cryptographic functions, and insecure coding patterns before the code is ever merged.
+2.  **Container Build (SCA):** Docker images are built and instantly scanned using Trivy. This step identifies outdated OS packages, vulnerable libraries, and known CVEs within the container layer.
+3.  **Deployment (DAST):** Once deployed to a staging environment, OWASP ZAP runs an automated dynamic scan against the live endpoints to catch runtime vulnerabilities like misconfigured CORS headers or injection flaws.
 
-### Key Features
+### Security Gates & Enforcement
+The pipeline is designed with strict severity thresholds. If Trivy detects a `CRITICAL` or `HIGH` severity CVE in the container image, the pipeline automatically fails, blocking the artifact from reaching the registry. This ensures that no vulnerable code can make its way into the production environment.
 
-*   **Automated SAST:** Static Application Security Testing integrated directly into pull requests.
-*   **Dynamic Analysis (DAST):** Automated runtime scanning against containerized staging environments.
-*   **Container Security:** Image scanning for outdated dependencies and known CVEs before registry push.
-*   **Infrastructure as Code (IaC):** Automated deployment configurations securely managed and audited.
-*   **Actionable Reporting:** Security findings automatically block builds based on severity thresholds and generate detailed reports.
+### Challenges Solved
+One of the primary challenges in DevSecOps is alert fatigue caused by false positives. To combat this, the pipeline includes automated severity filtering and utilizes SonarQube's quality profiles to suppress known false positives, ensuring developers only receive actionable, high-fidelity security alerts.
 
 ### Tech Stack
-
 | Component | Technology |
 | :--- | :--- |
-| CI/CD Pipeline | GitHub Actions / GitLab CI |
+| CI/CD Engine | GitHub Actions / GitLab CI |
 | Containerization | Docker |
-| Security Scanning | SonarQube, Trivy, OWASP ZAP |
-| Frontend | React + Vite |`
+| Security Scanning | SonarQube (SAST), Trivy (SCA), OWASP ZAP (DAST) |`
     },
     {
       id: "resellshield",
@@ -439,30 +432,27 @@ This project demonstrates the implementation of a true DevSecOps pipeline. By in
       description: "Modern React-based frontend for a resale marketplace enabling secure electronics trading. Features AI trust score visualization, blockchain-inspired transparency, and role-based access.",
       repo: "https://github.com/mukundhasuresh/resellshield-frontend",
       live: "https://resellshield-frontend.vercel.app/",
-      longDescription: `ReSellShield is a trust-first resale marketplace UI built with React and Vite. It connects to a backend API to provide a secure and transparent electronics trading platform.
+      longDescription: `ReSellShield is a trust-first resale marketplace UI built with React and Vite. It connects to a backend API to provide a secure, transparent, and fraud-resistant electronics trading platform.
 
-### Core Features
+### Core Architecture & State Management
+The application utilizes a robust React Context and Reducer pattern for global state management, ensuring that user sessions, cart states, and trust scores remain synchronized across the application without prop drilling. 
 
-*   **Marketplace Experience:** Clean product grid layout with trust badges and risk-level color indicators.
-*   **Search, Filter & Sort:** Dynamic filtering by condition, price range, and availability.
-*   **Product Detail Page:** Displays device details, trust score visualization, and blockchain-inspired ownership transparency.
-*   **Authentication:** Cookie-based JWT with role-based dashboards (Buyer / Seller / Admin).
+### AI Trust Assistant Integration
+To combat fraud in the second-hand electronics market, the platform integrates an Explainable AI (XAI) Trust Assistant.
+*   **Context-Aware Analysis:** The AI dynamically reads the seller's history, device warranty status, and blockchain-inspired ownership records fetched from the backend.
+*   **Explainable Scoring:** Instead of providing an arbitrary number, the chatbot breaks down exactly *why* a transaction is marked as High Risk or Safe, building buyer confidence.
 
-### AI Trust Assistant
-
-A context-aware chatbot integrated directly into the purchase flow:
-*   Explains trust scores and risk levels.
-*   Breaks down ownership history and warranty validity.
-*   Responds based on real backend trust data (Explainable, rule-based AI).
+### Security Implementation
+*   **Role-Based Access Control (RBAC):** The frontend conditionally renders administrative and seller dashboards based on decoded JWT claims, preventing unauthorized access to sensitive routes.
+*   **Secure Authentication:** Designed to work with HTTP-only cookies to mitigate Cross-Site Scripting (XSS) attacks, ensuring session tokens are never accessible via JavaScript `document.cookie`.
 
 ### Tech Stack
-
 | Technology | Purpose |
 | :--- | :--- |
-| React (Vite) | Frontend Framework |
-| Tailwind CSS | Styling |
-| Axios | API Integration |
-| Context / Reducer | State Management |`
+| React (Vite) | High-performance Frontend Framework |
+| Tailwind CSS | Utility-first UI Styling |
+| Axios | API Integration & Interceptors |
+| Context API | Global State Management |`
     },
     {
       id: "branch-loan",
@@ -471,33 +461,30 @@ A context-aware chatbot integrated directly into the purchase flow:
       description: "Full-stack fintech platform for intelligent loan management with dynamic fraud detection, multi-level workflows, notifications, analytics, and secure JWT authentication.",
       repo: "https://github.com/mukundhasuresh/branch-loan-frontend",
       live: "https://branch-loan-frontend.vercel.app/",
-      longDescription: `A modern, production-ready fintech dashboard for intelligent loan management, fraud detection, and real-time financial analytics.
-
-Branch Loan is designed as a startup-grade banking platform that automates loan workflows, detects suspicious financial activity, and provides deep insights through powerful dashboards and live monitoring.
+      longDescription: `Branch Loan is a modern, production-ready fintech dashboard designed for intelligent loan management, dynamic fraud detection, and real-time financial analytics. 
 
 ### Why This Project is Unique
+While most loan management systems focus purely on basic CRUD operations, Branch Loan is built like a true enterprise banking platform. It implements complex, real-world financial workflows designed to detect anomalies and enforce strict approval hierarchies.
 
-Most loan management projects focus only on CRUD operations. Branch Loan goes beyond that by implementing real-world banking concepts such as:
-*   Fraud detection with dynamic risk scoring
-*   Multi-role loan approval workflow
-*   Real-time notifications and advanced analytics
-*   Secure authentication with HTTP-only cookies
+### Fraud Detection Architecture
+Financial institutions require instantaneous anomaly detection. Branch Loan tackles this by:
+*   **Dynamic Risk Scoring:** Evaluating loan applications against historical data, user behavior, and demographic risk factors to assign a dynamic fraud score.
+*   **Real-Time WebSocket Alerts:** When a high-risk application is flagged, Socket.IO pushes instant notifications to the Admin dashboard, allowing immediate containment and review without page reloads.
 
-### Key Features
-
-*   **Authentication & Security:** Secure cookie-based JWT authentication and role-based access control.
-*   **Fraud Detection & Risk Monitoring:** Dynamic fraud scoring, high-risk loan flagging, and a dedicated fraud dashboard.
-*   **Loan Workflow Automation:** Employee -> Manager -> Admin approval flow and automated decision pipelines.
-*   **Real-Time Notifications:** Instant fraud alerts and live system monitoring using WebSockets.
+### Automated Workflow Pipeline
+To ensure compliance and segregation of duties, the platform utilizes a state-machine logic for its loan approval pipeline. Applications must traverse a strict path:
+*   **Level 1 (Employee):** Initial review and document verification.
+*   **Level 2 (Manager):** Financial risk assessment.
+*   **Level 3 (Admin):** Final approval and fund disbursement.
+This multi-role hierarchy guarantees that no single user can unilaterally approve a high-value loan.
 
 ### Tech Stack
-
 | Technology | Purpose |
 | :--- | :--- |
 | React (Vite) | Frontend Framework |
-| Tailwind CSS | UI Styling |
-| Recharts | Analytics Visualizations |
-| Socket.IO Client | Real-time events |`
+| Tailwind CSS | Responsive UI Styling |
+| Recharts | Live Analytics Visualizations |
+| Socket.IO Client | Real-time Event Driven Architecture |`
     }
   ]
 };
