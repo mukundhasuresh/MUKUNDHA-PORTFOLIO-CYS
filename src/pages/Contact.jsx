@@ -55,7 +55,7 @@ const Contact = () => {
                 {/* 
                   IMPORTANT: Replace this YOUR_ACCESS_KEY_HERE with your free access key from https://web3forms.com/
                 */}
-                <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+                <input type="hidden" name="access_key" value={import.meta.env.VITE_WEB3FORMS_KEY || ''} />
                 <input type="hidden" name="subject" value="New Submission from Portfolio" />
                 <input type="hidden" name="from_name" value="Portfolio Contact Form" />
                 

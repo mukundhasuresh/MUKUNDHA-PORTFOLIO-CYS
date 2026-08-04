@@ -335,7 +335,7 @@ const Home = () => {
                 <h3 style={{ fontSize: '20px', marginBottom: '24px' }}>Send a Message</h3>
                 <form action="https://api.web3forms.com/submit" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {/* Replace YOUR_ACCESS_KEY_HERE with your Web3Forms access key */}
-                  <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+                  <input type="hidden" name="access_key" value={import.meta.env.VITE_WEB3FORMS_KEY || ''} />
                   <input type="hidden" name="subject" value="New Submission from Portfolio (Home)" />
                   <input type="hidden" name="from_name" value="Portfolio Contact Form" />
                   
