@@ -82,7 +82,7 @@ const Home = () => {
         <FadeIn>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '60px', alignItems: 'center' }}>
             <motion.div 
-              style={{ flex: '1', minWidth: '300px' }}
+              style={{ flex: '1', minWidth: '250px' }}
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
             >
@@ -135,7 +135,7 @@ const Home = () => {
             </motion.div>
 
             <motion.div 
-              style={{ flex: '1', minWidth: '300px' }}
+              style={{ flex: '1', minWidth: '250px' }}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
@@ -302,7 +302,7 @@ const Home = () => {
         <FadeIn>
           <div className="container" style={{ position: 'relative', zIndex: 10, display: 'flex', flexWrap: 'wrap', gap: '60px', justifyContent: 'space-between', alignItems: 'center' }}>
             
-            <div style={{ flex: '1', minWidth: '300px' }}>
+            <div style={{ flex: '1', minWidth: '250px' }}>
               <h2 className="title-hero" style={{ marginBottom: '24px' }}>Let's build<br/>together.</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '18px', lineHeight: 1.6, marginBottom: '40px' }}>
                 Currently seeking an entry-level SOC Analyst role to apply my skills in threat detection and incident response.
@@ -330,7 +330,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div style={{ flex: '1', minWidth: '300px' }}>
+            <div style={{ flex: '1', minWidth: '250px' }}>
               <div className="glass-card" style={{ padding: '40px' }}>
                 <h3 style={{ fontSize: '20px', marginBottom: '24px' }}>Send a Message</h3>
                 <form action="https://api.web3forms.com/submit" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
