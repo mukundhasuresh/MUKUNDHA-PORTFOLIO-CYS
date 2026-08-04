@@ -164,7 +164,7 @@ const Home = () => {
                   </Link>
                 </motion.div>
               </div>
-              <div style={{ fontSize: '17px', color: 'var(--text-secondary)', lineHeight: '1.7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="about-me-text">
                 {data.personal.bio.split('. ').map((sentence, index, arr) => (
                   <motion.p 
                     key={index}

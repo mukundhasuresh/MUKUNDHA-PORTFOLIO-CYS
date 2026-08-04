@@ -177,6 +177,7 @@ export const data = {
       id: "soc-lab",
       title: "SOC Detection Engineering Lab",
       subtitle: "MITRE ATT&CK-mapped attack telemetry & Sigma Rules",
+      features: ["Detection Engineering", "Sigma Rules", "MITRE ATT&CK"],
       description: "A detection engineering project built against real, MITRE ATT&CK-mapped attack telemetry — 6 custom Sigma rules, confirmed true positive alerts, 3 incident response reports, and a SOAR containment playbook.",
       repo: "https://github.com/mukundhasuresh/SOC-LAB",
       longDescription: `A detection engineering project built against real, MITRE ATT&CK-mapped attack telemetry — 6 custom Sigma rules, confirmed true positive alerts, 3 incident response reports, and a SOAR containment playbook.
@@ -245,6 +246,7 @@ soc-detection-lab/
       id: "androsec-audit",
       title: "AndroSec Audit",
       subtitle: "Android APK Penetration Test",
+      features: ["Mobile Pentesting", "Static/Dynamic Analysis", "OWASP Mobile"],
       description: "End-to-end static and dynamic security assessment of a vulnerable Android banking application using MobSF and Burp Suite. Uncovered 14 findings across all 10 OWASP Mobile Top 10 categories.",
       repo: "https://github.com/mukundhasuresh/AndroSec-Audit",
       longDescription: `An end-to-end Android APK penetration test using MobSF and Burp Suite — performed entirely on Windows.
@@ -318,6 +320,7 @@ A total of 14 findings were uncovered across all 10 OWASP Mobile Top 10 categori
       id: "windows-log-anomaly",
       title: "Windows Log Anomaly Detector",
       subtitle: "ML-powered Security Tool",
+      features: ["Machine Learning", "Real-Time Monitoring", "Anomaly Detection"],
       description: "Reads Windows Security Event Logs in real time and flags suspicious activity (e.g., failed logins, off-hours access) using an Isolation Forest model, with severity-based alerting and a live Streamlit dashboard.",
       repo: "https://github.com/mukundhasuresh/windows-log-anomaly-detector",
       longDescription: `An ML-powered security tool that detects anomalies in Windows Event Logs in real time.
@@ -372,6 +375,7 @@ python main.py --mode dashboard
       id: "pentest-lab",
       title: "Penetration Testing Lab",
       subtitle: "OWASP Juice Shop",
+      features: ["Web Pentesting", "Vulnerability Research", "Dockerized Lab"],
       description: "A Dockerized black-box pentest lab pairing OWASP Juice Shop with OWASP ZAP, covering baseline, authenticated, and full active scans alongside manual exploitation of vulnerabilities.",
       repo: "https://github.com/mukundhasuresh/Penetration-testing-OWASP-juice-shop",
       longDescription: `A comprehensive Docker-based web application penetration testing lab using OWASP Juice Shop as the vulnerable target. This project demonstrates a structured, black-box penetration testing workflow from reconnaissance to final exploitation and report generation.
@@ -399,6 +403,7 @@ All vulnerabilities were mapped to the OWASP Top 10 framework, categorized by se
       id: "secure-devops",
       title: "Secure DevOps Pipeline",
       subtitle: "Full-Stack Security Platform",
+      features: ["SAST/DAST", "Container Security", "CI/CD Security"],
       description: "Platform built to weave automated vulnerability scanning directly into the CI/CD lifecycle, using containerized environments and security-first workflows.",
       repo: "https://github.com/mukundhasuresh/Securepipeline-backend",
       live: "https://github.com/mukundhasuresh/Securepipeline-frontend",
@@ -428,6 +433,7 @@ One of the primary challenges in DevSecOps is alert fatigue caused by false posi
       id: "resellshield",
       title: "ReSellShield",
       subtitle: "Trust-first Resale Marketplace",
+      features: ["React/Node.js", "AI Trust Scoring", "Secure Auth"],
       description: "Modern React-based frontend for a resale marketplace enabling secure electronics trading. Features AI trust score visualization, blockchain-inspired transparency, and role-based access.",
       repo: "https://github.com/mukundhasuresh/resellshield-frontend",
       live: "https://resellshield-frontend.vercel.app/",
@@ -457,6 +463,7 @@ To combat fraud in the second-hand electronics market, the platform integrates a
       id: "branch-loan",
       title: "Branch Loan",
       subtitle: "Fintech Platform",
+      features: ["PostgreSQL", "Full-Stack App", "Encrypted Data"],
       description: "Full-stack fintech platform for intelligent loan management with dynamic fraud detection, multi-level workflows, notifications, analytics, and secure JWT authentication.",
       repo: "https://github.com/mukundhasuresh/branch-loan-frontend",
       live: "https://branch-loan-frontend.vercel.app/",
