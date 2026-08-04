@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mukundha-portfolio-cys.vercel.app/sitemap.xml
