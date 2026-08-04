@@ -157,6 +157,28 @@ const ProjectDetail = () => {
                 </div>
               )}
 
+              {/* Key Features */}
+              {project.features && project.features.length > 0 && (
+                <div className="glass-card" style={{ padding: '30px', borderRadius: '16px' }}>
+                  <h4 style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-secondary)', marginBottom: '16px' }}>Key Features</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {project.features.map((feature, i) => (
+                      <li key={i} style={{ 
+                        display: 'flex', 
+                        alignItems: 'flex-start', 
+                        gap: '10px', 
+                        fontSize: '15px', 
+                        color: 'var(--text-primary)',
+                        lineHeight: '1.4'
+                      }}>
+                        <Rocket size={16} style={{ color: 'var(--accent-color)', flexShrink: 0, marginTop: '2px' }} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
             </div>
           </FadeIn>
 
