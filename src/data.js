@@ -388,13 +388,12 @@ The engagement was structured to follow professional penetration testing phases:
 
 ### Exploitation Deep Dive
 
-*   **SQL Injection (Login Bypass):** Successfully bypassed the authentication portal by injecting `' OR 1=1 --` into the email field. This forced the backend SQLite database to evaluate the query as true, logging in as the first user in the table (Admin).
-*   **Broken Access Control (IDOR):** Intercepted API requests to the basket endpoint (`/api/BasketItems/`) and manipulated the Basket ID parameter. The backend failed to authorize the request against the active session, allowing the viewing and modification of other users' shopping carts.
-*   **Reflected XSS:** Injected a malicious payload `<iframe src="javascript:alert(`xss`)">` into the search query. The server reflected the unescaped input directly into the DOM, executing the script in the context of the victim's browser session.
+*   **SQL Injection (Login Bypass):** Successfully bypassed the authentication portal by injecting \`' OR 1=1 --\` into the email field. This forced the backend SQLite database to evaluate the query as true, logging in as the first user in the table (Admin).
+*   **Broken Access Control (IDOR):** Intercepted API requests to the basket endpoint (\`/api/BasketItems/\`) and manipulated the Basket ID parameter. The backend failed to authorize the request against the active session, allowing the viewing and modification of other users' shopping carts.
+*   **Reflected XSS:** Injected a malicious payload \`<iframe src="javascript:alert('xss')">\` into the search query. The server reflected the unescaped input directly into the DOM, executing the script in the context of the victim's browser session.
 
 ### Impact & Reporting
-All vulnerabilities were mapped to the OWASP Top 10 framework, categorized by severity using the CVSS scoring system, and compiled into a final penetration test report detailing the findings, evidence (HTTP requests/responses), business impact, and remediation steps.
-| F5 | Exposed Admin Panel | A05:2021 Security Misconfiguration | Medium |`
+All vulnerabilities were mapped to the OWASP Top 10 framework, categorized by severity using the CVSS scoring system, and compiled into a final penetration test report detailing the findings, evidence (HTTP requests/responses), business impact, and remediation steps.`
     },
     {
       id: "secure-devops",
@@ -413,7 +412,7 @@ In a traditional DevOps pipeline, security is often treated as an afterthought. 
 3.  **Deployment (DAST):** Once deployed to a staging environment, OWASP ZAP runs an automated dynamic scan against the live endpoints to catch runtime vulnerabilities like misconfigured CORS headers or injection flaws.
 
 ### Security Gates & Enforcement
-The pipeline is designed with strict severity thresholds. If Trivy detects a `CRITICAL` or `HIGH` severity CVE in the container image, the pipeline automatically fails, blocking the artifact from reaching the registry. This ensures that no vulnerable code can make its way into the production environment.
+The pipeline is designed with strict severity thresholds. If Trivy detects a \`CRITICAL\` or \`HIGH\` severity CVE in the container image, the pipeline automatically fails, blocking the artifact from reaching the registry. This ensures that no vulnerable code can make its way into the production environment.
 
 ### Challenges Solved
 One of the primary challenges in DevSecOps is alert fatigue caused by false positives. To combat this, the pipeline includes automated severity filtering and utilizes SonarQube's quality profiles to suppress known false positives, ensuring developers only receive actionable, high-fidelity security alerts.
@@ -444,7 +443,7 @@ To combat fraud in the second-hand electronics market, the platform integrates a
 
 ### Security Implementation
 *   **Role-Based Access Control (RBAC):** The frontend conditionally renders administrative and seller dashboards based on decoded JWT claims, preventing unauthorized access to sensitive routes.
-*   **Secure Authentication:** Designed to work with HTTP-only cookies to mitigate Cross-Site Scripting (XSS) attacks, ensuring session tokens are never accessible via JavaScript `document.cookie`.
+*   **Secure Authentication:** Designed to work with HTTP-only cookies to mitigate Cross-Site Scripting (XSS) attacks, ensuring session tokens are never accessible via JavaScript \`document.cookie\`.
 
 ### Tech Stack
 | Technology | Purpose |
