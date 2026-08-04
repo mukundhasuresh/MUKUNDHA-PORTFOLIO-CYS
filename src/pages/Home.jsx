@@ -218,7 +218,7 @@ const Home = () => {
       {/* 3. PROJECTS SECTION */}
       <section className="container section">
         <FadeIn>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '60px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
             <h2 className="title-section">Selected Projects</h2>
             <Link to="/projects" style={{ color: 'var(--accent-color)', fontWeight: 500 }}>View All Projects &rarr;</Link>
           </div>
@@ -240,7 +240,7 @@ const Home = () => {
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100vw', height: '100%', background: 'radial-gradient(ellipse at center, rgba(10,132,255,0.08) 0%, transparent 60%)', zIndex: -1 }}></div>
         
         <FadeIn>
-          <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '60px' }}>
+          <div className="container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px' }}>
             <div>
               <h2 className="title-section" style={{ marginBottom: '12px' }}>Skills & Tools</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '16px', margin: 0 }}>The technologies I use to secure and analyze.</p>
@@ -307,7 +307,7 @@ const Home = () => {
               <p style={{ color: 'var(--text-secondary)', fontSize: '18px', lineHeight: 1.6, marginBottom: '40px' }}>
                 Currently seeking an entry-level SOC Analyst role to apply my skills in threat detection and incident response.
               </p>
-              <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '40px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', alignItems: 'center', marginBottom: '40px' }}>
                 <Link to="/contact" style={{ display: 'inline-block', background: 'var(--accent-color)', color: '#fff', padding: '16px 32px', borderRadius: '30px', fontWeight: '600', fontSize: '16px' }}>
                   Full Contact Details
                 </Link>

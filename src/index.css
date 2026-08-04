@@ -115,8 +115,29 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 768px) {
-  .card-grid-4 {
+  .card-grid-4, .card-grid {
     grid-template-columns: 1fr;
+  }
+  .container {
+    padding: 0 20px;
+  }
+  .section {
+    padding: 60px 0;
+  }
+  .title-hero {
+    font-size: 40px;
+  }
+  .title-section {
+    font-size: 28px;
+  }
+  .bottom-nav {
+    width: 90%;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    justify-content: space-between;
+  }
+  .bottom-nav a {
+    font-size: 11px;
   }
 }
 
