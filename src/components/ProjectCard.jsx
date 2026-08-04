@@ -14,7 +14,15 @@ const ProjectCard = ({ project }) => {
       <div>
         <h3>{project.title}</h3>
         <div className="subtitle">{project.subtitle}</div>
-        <p>{project.description.substring(0, 110)}...</p>
+        <p>{project.description.substring(0, 85)}...</p>
+        
+        {project.features && (
+          <div className="card-tags">
+            {project.features.slice(0, 3).map((tag, i) => (
+              <span key={i} className="card-tag">{tag}</span>
+            ))}
+          </div>
+        )}
       </div>
       
       <div className="card-footer">

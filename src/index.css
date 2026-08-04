@@ -126,7 +126,7 @@ h1, h2, h3, h4 {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
   border-radius: 20px;
-  padding: 32px;
+  padding: 24px;
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -151,9 +151,9 @@ h1, h2, h3, h4 {
 }
 
 .project-card-premium:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(41, 151, 255, 0.1);
-  border-color: rgba(41, 151, 255, 0.3);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 15px rgba(41, 151, 255, 0.08);
+  border-color: rgba(41, 151, 255, 0.25);
   z-index: 10;
 }
 
@@ -162,7 +162,7 @@ h1, h2, h3, h4 {
 }
 
 .project-card-premium h3 {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--text-primary);
@@ -170,19 +170,42 @@ h1, h2, h3, h4 {
 }
 
 .project-card-premium .subtitle {
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent-color);
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .project-card-premium p {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 24px;
+}
+
+.card-tag {
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.project-card-premium:hover .card-tag {
+  background: rgba(41, 151, 255, 0.08);
+  border-color: rgba(41, 151, 255, 0.2);
+  color: var(--accent-color);
 }
 
 .project-card-premium .card-footer {
@@ -190,7 +213,7 @@ h1, h2, h3, h4 {
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-top: 20px;
+  padding-top: 16px;
   margin-top: auto;
 }
 
