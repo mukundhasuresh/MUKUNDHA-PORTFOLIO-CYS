@@ -6,6 +6,7 @@ import { data } from '../data';
 import { useNavigate, Link } from 'react-router-dom';
 import { Typewriter } from 'react-simple-typewriter';
 import SkillBadge from '../components/SkillBadge';
+import ProjectCard from '../components/ProjectCard';
 import { SiSplunk, SiWireshark, SiLinux } from 'react-icons/si';
 import { Shield, ShieldAlert, Terminal, Activity, Globe, Crosshair, Search, Cloud, Monitor, Eye, Flame, Mail, Share2, Code, Bot } from 'lucide-react';
 import ResumeSection from '../components/ResumeSection';
@@ -223,20 +224,10 @@ const Home = () => {
           </div>
         </FadeIn>
         
-        <div className="card-grid">
-          {data.projects.map((project, i) => (
+        <div className="card-grid-4">
+          {data.projects.slice(0, 4).map((project, i) => (
             <FadeIn key={project.id} delay={i * 0.1}>
-              <motion.div 
-                className="glass-card"
-                onClick={() => navigate(`/projects/${project.id}`)}
-                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', cursor: 'pointer' }}
-              >
-                <div>
-                  <h3 style={{ fontSize: '24px', marginBottom: '12px' }}>{project.title}</h3>
-                  <p style={{ color: 'var(--accent-color)', marginBottom: '16px', fontWeight: 500 }}>{project.subtitle}</p>
-                </div>
-                <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{project.description.substring(0, 100)}...</p>
-              </motion.div>
+              <ProjectCard project={project} />
             </FadeIn>
           ))}
         </div>
