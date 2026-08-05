@@ -44,11 +44,11 @@ Live Portfolio: https://mukundha-portfolio-cys.vercel.app/
    ```
 
 ## Project Structure
-- `src/components/` - Reusable UI components (Navbars, Cards, Badges, etc.)
-- `src/pages/` - Main views (Home, Projects, Skills, Contact)
-- `src/data.js` - Single source of truth for portfolio content (Experience, Education, Projects)
-- `src/index.css` - Global styles and CSS variables
-- `public/` - Static assets, images, and resume PDF
+- `src/components/` - Reusable UI components (Navbars, Cards, Badges, etc.) .
+- `src/pages/` - Main views (Home, Projects, Skills, Contact) .
+- `src/data.js` - Single source of truth for portfolio content (Experience, Education, Projects) .
+- `src/index.css` - Global styles and CSS variables .
+- `public/` - Static assets, images, and resume PDF .
 
 ## License
 This project is licensed under the MIT License.
