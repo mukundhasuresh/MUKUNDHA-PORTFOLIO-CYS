@@ -174,6 +174,41 @@ export const data = {
   ],
   projects: [
     {
+      id: "asm-osint",
+      title: "Attack Surface Mapper (ASM)",
+      subtitle: "Passive OSINT Reconnaissance Pipeline",
+      features: ["OSINT", "Python", "Risk Scoring", "DevSecOps"],
+      description: "An automated, passive-only OSINT reconnaissance pipeline designed to map external attack surfaces, identify exposed assets, and generate scored risk reports without performing active exploitation.",
+      repo: "https://github.com/mukundhasuresh/attack-surface-mapper",
+      longDescription: `An automated, passive-only OSINT reconnaissance pipeline designed to map external attack surfaces, identify exposed assets, and generate scored risk reports without performing active exploitation.
+
+![Attack Surface Report](/projects/asm/2.png)
+
+### What this project is
+A passive OSINT recon tool that takes a company domain as input and produces a prioritized, risk-scored exposure report. It is built entirely on **passive/OSINT sources** (certificate transparency logs, public APIs like Shodan/Censys/VirusTotal, public breach databases, public code repos). No active exploitation or unauthorized scanning is performed.
+
+This maps to MITRE ATT&CK **Reconnaissance (TA0043)**.
+
+### High-level Pipeline
+
+1. **Discovery**: Find subdomains, live hosts, and IP/ASN footprints using Certificate Transparency logs via crt.sh and VirusTotal.
+2. **Fingerprinting**: Identify tech stack, services, and ports per host utilizing Favicon hashes and passive API queries (Shodan/Censys).
+3. **Exposure Hunting**: Find dangerous misconfigurations & leaks such as common sensitive paths, open cloud storage buckets, and leaked GitHub API keys.
+4. **Risk Scoring**: Weight and rank findings per host to turn raw findings into a prioritized risk list based on severity.
+5. **Reporting**: Generate an executive summary report.
+
+![Top 5 Findings](/projects/asm/1.jpg)
+
+### Legal and Ethical Scope
+Only run this tool against domains you own or have explicit written authorization to test. This tool maps strictly to MITRE ATT&CK **Reconnaissance (TA0043)** passive information-gathering sub-techniques. 
+
+![Methodology Scope](/projects/asm/3.jpg)
+
+### Incident Response: GitGuardian False Positive
+During the development of this project, I integrated a DevSecOps workflow using **GitGuardian** and Yelp's \`detect-secrets\` pre-commit hooks to mechanically prevent hardcoded credentials. A commit containing scoring logic triggered a GitGuardian alert for high-entropy strings, prompting an immediate investigation. I confirmed it was a false positive, baselined the known dummy strings, and fortified the pre-commit review process to prevent secrets from reaching the repository.
+`
+    },
+    {
       id: "soc-lab",
       title: "SOC Detection Engineering Lab",
       subtitle: "MITRE ATT&CK-mapped attack telemetry & Sigma Rules",
