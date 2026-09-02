@@ -527,5 +527,81 @@ This multi-role hierarchy guarantees that no single user can unilaterally approv
 | Recharts | Live Analytics Visualizations |
 | Socket.IO Client | Real-time Event Driven Architecture |`
     }
+  ],
+  blog: [
+    {
+      id: "splunk-dashboard-homelab",
+      title: "Building a Custom Splunk Dashboard for Homelab Alerts",
+      date: "Sep 2026",
+      tags: ["Splunk", "SIEM", "Homelab"],
+      summary: "How I ingested pfSense and Windows Event Logs into Splunk to create a unified SOC dashboard.",
+      content: `In a real SOC environment, visibility is everything. You cannot defend what you cannot see. To practice parsing and visualizing raw telemetry, I built a custom Splunk instance in my homelab to act as a centralized SIEM.
+
+### The Objective
+The goal was to ingest logs from two primary sources:
+1.  **pfSense Firewall:** To monitor inbound/outbound network traffic and blocklist hits.
+2.  **Windows 11 Endpoint:** To monitor process creation (Sysmon Event ID 1) and PowerShell execution.
+
+### Data Ingestion
+I deployed the **Splunk Universal Forwarder** on the Windows machine. For the pfSense firewall, I configured it to send Syslog directly to the Splunk indexer over UDP port 514. 
+
+The immediate challenge was parsing. Syslog data from pfSense isn't natively formatted for Splunk's Common Information Model (CIM). I had to write custom regex extractions in \`props.conf\` and \`transforms.conf\` to parse out the \`src_ip\`, \`dest_ip\`, and \`action\` (pass/block).
+
+### Building the Dashboard
+Once the data was normalized, I wrote several SPL (Splunk Processing Language) queries to visualize the threats:
+
+**1. Top Blocked Inbound IPs:**
+\`\`\`spl
+index=firewall action=blocked direction=inbound 
+| top limit=10 src_ip 
+| iplocation src_ip
+\`\`\`
+This query populates a geopolitical map, instantly highlighting anomalous traffic spikes from unexpected regions.
+
+**2. Suspicious PowerShell Execution:**
+\`\`\`spl
+index=windows sourcetype="WinEventLog:Microsoft-Windows-PowerShell/Operational" EventCode=4104
+| search Message="*EncodedCommand*" OR Message="*Hidden*"
+| table _time, ComputerName, User, Message
+\`\`\`
+This panel alerts on potential obfuscation attempts, a common technique used in fileless malware.
+
+### Conclusion
+Building this homelab dashboard gave me hands-on experience with the entire SIEM lifecycle: from raw log ingestion and parsing (Data Engineer) to SPL query writing and dashboard creation (SOC Analyst).`
+    },
+    {
+      id: "analyzing-powershell-execution",
+      title: "Analyzing Suspicious PowerShell Execution via Event Logs",
+      date: "Aug 2026",
+      tags: ["Digital Forensics", "Incident Response", "Windows"],
+      summary: "A deep dive into tracing malicious PowerShell activity using Windows Event ID 4104 (Script Block Logging).",
+      content: `PowerShell is a double-edged sword. It's a powerful administrative tool, making it a prime target for "Living off the Land" (LotL) attacks. When adversaries use legitimate tools, traditional antivirus often fails. This is where behavioral analysis and Event Tracing for Windows (ETW) come in.
+
+### The Setup
+To simulate a LotL attack, I executed a harmless payload using a classic obfuscation technique: Base64 encoding.
+
+\`\`\`powershell
+powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -EncodedCommand JABzAD0ATgBlAHcALQBPAGIAagBlAGMAdAAgAEkATwAuAE0AZQBtAG8AcgB5AFMAdAByAGUAYQBtACgAWwBDAG8AbgB2AGUAcgB0AF0AOgA6AEYAcgBvAG0AQgBhAHMAZQA2ADQAUwB0AHIAaQBuAGcAKAAiAEgA...
+\`\`\`
+
+### The Investigation (Event ID 4104)
+If a SOC analyst only looks at Process Creation (Event ID 4688), they will see \`powershell.exe\` launch, but the actual command line might be truncated or heavily obfuscated with Base64. 
+
+The true forensic goldmine is **Event ID 4104 (PowerShell Script Block Logging)**.
+
+When Script Block Logging is enabled via Group Policy, PowerShell captures the *de-obfuscated* script content just before execution. 
+
+I opened Event Viewer (\`Microsoft-Windows-PowerShell/Operational\`) and located Event 4104 corresponding to the time of execution. Inside the event payload, the Base64 payload was fully unwrapped, revealing the actual script:
+
+\`\`\`powershell
+$s=New-Object IO.MemoryStream([Convert]::FromBase64String("H4sIAAAAAAA..."));
+$IEX (New-Object IO.StreamReader(New-Object IO.Compression.GzipStream($s,[IO.Compression.CompressionMode]::Decompress))).ReadToEnd();
+\`\`\`
+
+### Incident Response Takeaways
+1.  **Always enable Script Block Logging:** By default, it only logs scripts that match known malicious signatures. Force-enabling it ensures *all* script blocks are recorded.
+2.  **Look for decompression:** The script above uses \`GzipStream\` to decompress a secondary payload in memory. This is a massive red flag.
+3.  **Hunt for \`IEX\`:** The \`Invoke-Expression\` cmdlet (or its alias \`IEX\`) is the execution trigger. In a SIEM, querying for \`EventID=4104 AND Message="*IEX*"\` is a high-fidelity hunt for fileless execution.`
+    }
   ]
 };

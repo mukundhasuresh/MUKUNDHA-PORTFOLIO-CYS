@@ -7,6 +7,8 @@ import Contact from './pages/Contact';
 import ProjectDetail from './pages/ProjectDetail';
 import ProjectsIndex from './pages/ProjectsIndex';
 import Skills from './pages/Skills';
+import BlogIndex from './pages/BlogIndex';
+import BlogDetail from './pages/BlogDetail';
 import { Analytics } from '@vercel/analytics/react';
 import './index.css';
 
@@ -19,6 +21,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/projects" element={<ProjectsIndex />} />
         <Route path="/projects/:id" element={<ProjectDetail />} />
+        <Route path="/blog" element={<BlogIndex />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/skills" element={<Skills />} />
       </Routes>
       <FooterNav />
