@@ -116,28 +116,18 @@ const Home = () => {
         <FadeIn>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '60px', alignItems: 'center' }}>
             <motion.div 
-              style={{ flex: '1', minWidth: '250px' }}
+              style={{ flex: '1', minWidth: 'min(100%, 250px)', maxWidth: '100%' }}
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
             >
-              <div style={{ 
-                background: 'linear-gradient(145deg, rgba(20,20,20,0.9) 0%, rgba(10,10,10,0.95) 100%)',
-                border: '1px solid rgba(255,255,255,0.1)', 
-                borderRadius: '12px', 
-                padding: '24px',
-                fontFamily: 'monospace',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-                backdropFilter: 'blur(20px)',
-                position: 'relative',
-                overflow: 'hidden'
-              }}>
+              <div className="terminal-box">
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, var(--accent-color), transparent)', opacity: 0.5 }}></div>
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
                   <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ff3b30', boxShadow: '0 0 10px #ff3b3080' }}></div>
                   <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffcc00', boxShadow: '0 0 10px #ffcc0080' }}></div>
                   <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#4cd964', boxShadow: '0 0 10px #4cd96480' }}></div>
                 </div>
-                <div>
+                <div className="terminal-text" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                   <span style={{ color: '#4cd964' }}>mukundha@soc</span>
                   <span style={{ color: '#fff' }}>:</span>
                   <span style={{ color: '#0a84ff' }}>~/about</span>
@@ -157,7 +147,8 @@ const Home = () => {
                   whileInView={{ opacity: 1 }}
                   transition={{ delay: 4 }}
                   viewport={{ once: true }}
-                  style={{ marginTop: '16px', lineHeight: '1.8', color: 'var(--text-secondary)', fontSize: '15px' }}
+                  className="terminal-text"
+                  style={{ marginTop: '16px', lineHeight: '1.8', color: 'var(--text-secondary)' }}
                 >
                   <span style={{ color: '#4cd964' }}>[OK]</span> Loaded profile data.<br/>
                   <span style={{ color: 'var(--accent-color)' }}>&gt;</span> Status: <span style={{ color: '#fff' }}>Recent B.Tech Graduate (July 2026)</span><br/>
@@ -169,7 +160,7 @@ const Home = () => {
             </motion.div>
 
             <motion.div 
-              style={{ flex: '1', minWidth: '250px' }}
+              style={{ flex: '1', minWidth: 'min(100%, 250px)', maxWidth: '100%' }}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
@@ -271,7 +262,7 @@ const Home = () => {
       <section className="section" style={{ position: 'relative', overflow: 'hidden', padding: '100px 0' }}>
         
         {/* Subtle Background Glow */}
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100vw', height: '100%', background: 'radial-gradient(ellipse at center, rgba(10,132,255,0.08) 0%, transparent 60%)', zIndex: -1 }}></div>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', background: 'radial-gradient(ellipse at center, rgba(10,132,255,0.08) 0%, transparent 60%)', zIndex: -1 }}></div>
         
         <FadeIn>
           <div className="container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px' }}>
@@ -336,7 +327,7 @@ const Home = () => {
         <FadeIn>
           <div className="container" style={{ position: 'relative', zIndex: 10, display: 'flex', flexWrap: 'wrap', gap: '60px', justifyContent: 'space-between', alignItems: 'center' }}>
             
-            <div style={{ flex: '1', minWidth: '250px' }}>
+            <div style={{ flex: '1', minWidth: 'min(100%, 250px)', maxWidth: '100%' }}>
               <h2 className="title-hero" style={{ marginBottom: '24px' }}>Let's build<br/>together.</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '18px', lineHeight: 1.6, marginBottom: '40px' }}>
                 Currently seeking an entry-level SOC Analyst role to apply my skills in threat detection and incident response.
@@ -364,7 +355,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div style={{ flex: '1', minWidth: '250px' }}>
+            <div style={{ flex: '1', minWidth: 'min(100%, 250px)', maxWidth: '100%' }}>
               <div className="glass-card" style={{ padding: '40px' }}>
                 <h3 style={{ fontSize: '20px', marginBottom: '24px' }}>Send a Message</h3>
                 <form action="https://api.web3forms.com/submit" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
