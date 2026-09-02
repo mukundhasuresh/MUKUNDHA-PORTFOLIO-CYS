@@ -601,6 +601,7 @@ $IEX (New-Object IO.StreamReader(New-Object IO.Compression.GzipStream($s,[IO.Com
 ### Incident Response Takeaways
 1.  **Always enable Script Block Logging:** By default, it only logs scripts that match known malicious signatures. Force-enabling it ensures *all* script blocks are recorded.
 2.  **Look for decompression:** The script above uses \`GzipStream\` to decompress a secondary payload in memory. This is a massive red flag.
+3.  **Hunt for \`IEX\`:** The \`Invoke-Expression\` cmdlet (or its alias \`IEX\`) is the execution trigger. In a SIEM, querying for \`EventID=4104 AND Message="*IEX*"\` is a high-fidelity hunt for fileless execution.`
     },
     {
       id: "hunting-cobalt-strike-ja3",
