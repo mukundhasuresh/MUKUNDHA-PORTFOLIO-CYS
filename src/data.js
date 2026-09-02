@@ -535,7 +535,8 @@ This multi-role hierarchy guarantees that no single user can unilaterally approv
       date: "Sep 2026",
       tags: ["Splunk", "SIEM", "Homelab"],
       summary: "How I ingested pfSense and Windows Event Logs into Splunk to create a unified SOC dashboard.",
-      content: `In a real SOC environment, visibility is everything. You cannot defend what you cannot see. To practice parsing and visualizing raw telemetry, I built a custom Splunk instance in my homelab to act as a centralized SIEM.
+      image: "/images/blogs/splunk.jpg",
+      content: `![Splunk Dashboard Header](/images/blogs/splunk.jpg)\n\nIn a real SOC environment, visibility is everything. You cannot defend what you cannot see. To practice parsing and visualizing raw telemetry, I built a custom Splunk instance in my homelab to act as a centralized SIEM.
 
 ### The Objective
 The goal was to ingest logs from two primary sources:
@@ -575,7 +576,8 @@ Building this homelab dashboard gave me hands-on experience with the entire SIEM
       date: "Aug 2026",
       tags: ["Digital Forensics", "Incident Response", "Windows"],
       summary: "A deep dive into tracing malicious PowerShell activity using Windows Event ID 4104 (Script Block Logging).",
-      content: `PowerShell is a double-edged sword. It's a powerful administrative tool, making it a prime target for "Living off the Land" (LotL) attacks. When adversaries use legitimate tools, traditional antivirus often fails. This is where behavioral analysis and Event Tracing for Windows (ETW) come in.
+      image: "/images/blogs/powershell.jpg",
+      content: `![PowerShell Analysis](/images/blogs/powershell.jpg)\n\nPowerShell is a double-edged sword. It's a powerful administrative tool, making it a prime target for "Living off the Land" (LotL) attacks. When adversaries use legitimate tools, traditional antivirus often fails. This is where behavioral analysis and Event Tracing for Windows (ETW) come in.
 
 ### The Setup
 To simulate a LotL attack, I executed a harmless payload using a classic obfuscation technique: Base64 encoding.
@@ -609,7 +611,8 @@ $IEX (New-Object IO.StreamReader(New-Object IO.Compression.GzipStream($s,[IO.Com
       date: "Jul 2026",
       tags: ["Threat Hunting", "Suricata", "Network Security"],
       summary: "How I utilized JA3 TLS fingerprinting to detect default Cobalt Strike C2 traffic hiding in plain sight.",
-      content: `Adversaries love to hide command-and-control (C2) traffic inside encrypted HTTPS tunnels. If you are a network defender, you cannot blindly decrypt all SSL/TLS traffic due to privacy and performance constraints. So, how do you catch a Cobalt Strike beacon hiding in standard port 443 traffic?
+      image: "/images/blogs/cobalt.jpg",
+      content: `![Cobalt Strike Radar](/images/blogs/cobalt.jpg)\n\nAdversaries love to hide command-and-control (C2) traffic inside encrypted HTTPS tunnels. If you are a network defender, you cannot blindly decrypt all SSL/TLS traffic due to privacy and performance constraints. So, how do you catch a Cobalt Strike beacon hiding in standard port 443 traffic?
 
 The answer lies in **TLS Fingerprinting**, specifically **JA3**.
 
@@ -645,7 +648,8 @@ By profiling the *method* of encryption rather than the encrypted data itself, w
       date: "Jun 2026",
       tags: ["Cloud Security", "AWS", "Python"],
       summary: "Using Python and Boto3 to parse CloudTrail logs and detect unauthorized IAM privilege escalation.",
-      content: `The cloud is the new endpoint. In modern infrastructure, identity is the ultimate perimeter. If an attacker compromises an AWS IAM access key, they won't trigger traditional endpoint EDR alerts; they will blend into CloudTrail logs as API calls.
+      image: "/images/blogs/aws.jpg",
+      content: `![AWS Security Vector](/images/blogs/aws.jpg)\n\nThe cloud is the new endpoint. In modern infrastructure, identity is the ultimate perimeter. If an attacker compromises an AWS IAM access key, they won't trigger traditional endpoint EDR alerts; they will blend into CloudTrail logs as API calls.
 
 This write-up explores how I built a Python script to mechanically hunt for **Privilege Escalation** techniques in AWS.
 
@@ -689,7 +693,8 @@ Cloud security requires thinking in APIs, not just IP addresses.`
       date: "May 2026",
       tags: ["Malware Analysis", "Phishing", "Reverse Engineering"],
       summary: "Tearing apart a weaponized Excel document to extract the payload URL without executing the malware.",
-      content: `Despite being a decades-old technique, malicious Microsoft Office Macros (VBA) remain one of the most common initial access vectors for ransomware operators.
+      image: "/images/blogs/macro.jpg",
+      content: `![Macro Malware Vector](/images/blogs/macro.jpg)\n\nDespite being a decades-old technique, malicious Microsoft Office Macros (VBA) remain one of the most common initial access vectors for ransomware operators.
 
 When a suspicious \`invoice.docm\` lands in the SOC queue, executing it in a sandbox is easy, but extracting the Indicators of Compromise (IoCs) statically is a crucial skill.
 
