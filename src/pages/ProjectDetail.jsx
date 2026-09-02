@@ -59,10 +59,10 @@ const ProjectDetail = () => {
               <Layout size={200} style={{ position: 'absolute', right: '-40px', bottom: '-40px', opacity: 0.03, transform: 'rotate(-15deg)' }} />
               
               <div style={{ position: 'relative', zIndex: 10 }}>
-                <h1 style={{ fontSize: '56px', fontWeight: '700', marginBottom: '16px', letterSpacing: '-0.04em', lineHeight: '1.1' }}>
+                <h1 className="title-hero" style={{ marginBottom: '16px' }}>
                   {project.title}
                 </h1>
-                <h2 style={{ fontSize: '24px', color: 'var(--accent-color)', fontWeight: '400', maxWidth: '600px' }}>
+                <h2 style={{ fontSize: 'clamp(18px, 4vw, 24px)', color: 'var(--accent-color)', fontWeight: '400', maxWidth: '600px' }}>
                   {project.subtitle}
                 </h2>
               </div>
@@ -82,7 +82,7 @@ const ProjectDetail = () => {
           
           {/* LEFT COLUMN: The Case Study / Markdown */}
           <FadeIn delay={0.1}>
-            <div className="markdown-content" style={{ fontSize: '17px', lineHeight: '1.8' }}>
+            <div className="markdown-content">
               {project.longDescription ? (
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {project.longDescription}

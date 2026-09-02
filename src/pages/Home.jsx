@@ -317,6 +317,7 @@ const Home = () => {
 
         {/* Floating Mail Pixel Art */}
         <motion.div
+          className="hide-on-mobile"
           animate={{ y: [-15, 15, -15], rotate: [-5, 5, -5] }}
           transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
           style={{ position: 'absolute', top: '10%', right: '5%', zIndex: 5, pointerEvents: 'none', opacity: 0.9 }}

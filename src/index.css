@@ -137,6 +137,9 @@ h1, h2, h3, h4 {
   .title-section {
     font-size: 28px;
   }
+  .contact-sidebar, .hide-on-mobile {
+    display: none !important;
+  }
   .bottom-nav {
     width: 90%;
     gap: 12px !important;
@@ -347,6 +350,11 @@ h1, h2, h3, h4 {
 }
 
 /* Markdown Rich Text Styling */
+.markdown-content {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
 .markdown-content h2, .markdown-content h3 {
   margin-top: 1.5em;
   margin-bottom: 0.75em;
@@ -356,13 +364,35 @@ h1, h2, h3, h4 {
 
 .markdown-content p {
   margin-bottom: 1em;
-  line-height: 1.7;
+  line-height: inherit;
 }
 
 .markdown-content ul {
   padding-left: 1.5em;
   margin-bottom: 1.5em;
   list-style-type: disc;
+}
+
+@media (max-width: 768px) {
+  .markdown-content {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .markdown-content h2 {
+    font-size: 20px;
+  }
+  .markdown-content h3 {
+    font-size: 18px;
+  }
+  .project-card-premium {
+    padding: 20px;
+  }
+  .project-card-premium h3 {
+    font-size: 17px;
+  }
+  .project-card-premium p {
+    font-size: 13px;
+  }
 }
 
 .markdown-content li {

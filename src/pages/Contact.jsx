@@ -12,7 +12,7 @@ const Contact = () => {
 
       <div style={{ display: 'flex', gap: '80px', flexWrap: 'wrap' }}>
         {/* Left Box */}
-        <div style={{ flex: '1', minWidth: '300px', maxWidth: '400px' }}>
+        <div className="contact-sidebar" style={{ flex: '1', minWidth: '300px', maxWidth: '400px' }}>
           <div className="glass-card" style={{ marginBottom: '40px' }}>
             <h3 style={{ fontSize: '24px', marginBottom: '20px' }}>Let's talk about your security posture.</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.6' }}>
