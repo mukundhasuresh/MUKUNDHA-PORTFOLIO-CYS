@@ -725,6 +725,79 @@ By doing this statically, we safely acquired two critical IoCs without detonatin
 *   **Behavior:** PowerShell downloading a remote file upon Word startup.
 
 I can now take that domain, push it to our Firewall blocklist, and query the SIEM to see if any endpoints have resolved that domain in the last 72 hours.`
+    },
+    {
+      id: "analyzing-emotet-pcap",
+      title: "Analyzing Wireshark PCAPs to Detect Emotet Malware",
+      date: "Apr 2026",
+      tags: ["Wireshark", "Network Forensics", "Malware Analysis"],
+      summary: "A deep dive into tracing an Emotet infection lifecycle from initial phishing payload to C2 beaconing using raw PCAP files.",
+      content: `Network traffic never lies. While an advanced adversary can delete Windows Event Logs or unhook EDR sensors, they still have to communicate over the wire. This write-up details how I analyzed a raw \`.pcap\` file from a simulated Emotet infection to extract the initial payload and map the Command and Control (C2) infrastructure.
+
+### 1. Identifying the Initial Compromise
+Opening the PCAP in Wireshark, the first step is to filter for HTTP traffic, as initial staging payloads often pull down secondary binaries via unencrypted HTTP.
+\`\`\`text
+http.request.method == "GET"
+\`\`\`
+I identified a highly suspicious \`GET\` request from an internal IP to a random, high-entropy domain: \`http://random-domain.com/wp-admin/jhgsdf/\`.
+
+### 2. Extracting the Payload
+Following the TCP stream (Ctrl+Alt+Shift+T), I observed the server responding with a \`Content-Type: application/x-msdownload\` header. The Magic Bytes at the beginning of the response body were \`MZ\`, indicating a Windows Executable (PE file) was downloaded in the clear.
+
+Instead of running this on a host, I used Wireshark's **Export Objects -> HTTP** feature to carve the malicious \`.exe\` directly from the PCAP and uploaded its hash to VirusTotal. It flagged immediately as Emotet.
+
+### 3. Tracing the C2 Beaconing
+Once the malware executed (simulated), it needed to phone home. I cleared the HTTP filter and looked at DNS queries:
+\`\`\`text
+dns.flags.response == 0
+\`\`\`
+I noticed repeated DNS requests to dynamically generated domains (DGA), followed by encrypted traffic (TLS) on non-standard ports (e.g., 443/TCP but without proper SSL handshakes, or 8080/TCP). 
+
+### Incident Response Takeaways
+1.  **Extracting IoCs:** I successfully extracted the staging domain, the payload hash, and 3 hardcoded C2 IP addresses.
+2.  **Network Detections:** The presence of a raw IP address in a TLS Client Hello (SNI) is highly anomalous. I wrote a Zeek script to alert whenever a client attempts an SSL handshake without a valid domain name in the SNI extension, catching this exact C2 beaconing behavior.
+`
+    },
+    {
+      id: "phishing-email-header-analysis",
+      title: "Analyzing Malicious SPF, DKIM, and DMARC in Phishing Campaigns",
+      date: "Mar 2026",
+      tags: ["Email Security", "Phishing", "OSINT"],
+      summary: "How to manually dissect raw email headers to trace the true origin of a sophisticated spoofing campaign.",
+      content: `Business Email Compromise (BEC) and spear-phishing are responsible for over 90% of initial breaches. Modern SOC analysts must be able to read raw email headers like Neo reads the Matrix. In this lab, I dissected a highly sophisticated phishing email that successfully bypassed a corporate spam filter.
+
+### The Attack
+The email appeared to be from \`billing@microsoft-support.com\`, urging the user to click a link to update their payment details. At first glance, the sender address looked legitimate to an untrained user.
+
+### Dissecting the Headers
+I extracted the raw \`.eml\` file and analyzed the headers.
+
+**1. The Return-Path Anomaly**
+The \`From:\` header displayed the spoofed Microsoft address, but the \`Return-Path:\` (where bounce messages are sent) revealed the true origin:
+\`\`\`text
+From: "Microsoft Billing" <billing@microsoft-support.com>
+Return-Path: <attacker123@compromised-server.ru>
+\`\`\`
+
+**2. SPF and DKIM Failures**
+Sender Policy Framework (SPF) checks if the sending IP is authorized by the domain owner.
+\`\`\`text
+Received-SPF: SoftFail (domain of compromised-server.ru does not designate 192.168.x.x as permitted sender)
+Authentication-Results: spf=softfail (sender IP is 192.168.x.x) smtp.mailfrom=attacker123@compromised-server.ru; dkim=none (message not signed)
+\`\`\`
+The spam filter let it through because the SPF policy was set to \`~all\` (SoftFail) instead of \`-all\` (HardFail), and DMARC was configured to \`p=none\` (monitor mode only).
+
+### Extracting the Payload
+The email contained an HTML link:
+\`\`\`html
+<a href="http://login.microsoftonline.com.secure-update-portal.net/login">Update Billing</a>
+\`\`\`
+This is a classic homograph/subdomain trick. The actual domain is \`secure-update-portal.net\`, not \`microsoftonline.com\`.
+
+### Defensive Actions
+1.  **Blocklist:** Pushed \`secure-update-portal.net\` to the Cisco Umbrella DNS sinkhole.
+2.  **Remediation:** Purged the email from all user inboxes using Office 365 Security & Compliance PowerShell module (\`Search-Mailbox -DeleteContent\`).
+3.  **Policy Update:** Recommended the organization enforce strict DMARC (\`p=reject\`) to prevent future spoofing of internal domains.`
     }
   ]
 };
