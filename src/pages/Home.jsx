@@ -69,6 +69,39 @@ const Home = () => {
       <CursorStickerTrail>
         <section className="min-h-screen flex-center" style={{ position: 'relative' }}>
           <motion.div style={{ y, opacity, textAlign: 'center', zIndex: 10, pointerEvents: 'auto' }}>
+            
+            {/* Status Badge */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 12px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '20px',
+              color: 'var(--text-primary)',
+              fontSize: '12px',
+              fontWeight: '600',
+              marginBottom: '24px'
+            }}>
+              <span style={{
+                width: '8px',
+                height: '8px',
+                background: '#00ff66',
+                borderRadius: '50%',
+                boxShadow: '0 0 10px #00ff66',
+                animation: 'pulse 2s infinite'
+              }}></span>
+              ACTIVELY SEEKING JUNIOR SOC ROLES
+            </div>
+            <style>{`
+              @keyframes pulse {
+                0% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.5; transform: scale(1.2); }
+                100% { opacity: 1; transform: scale(1); }
+              }
+            `}</style>
+
             <h1 className="title-hero" style={{ marginBottom: '16px', textShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>{data.personal.name}</h1>
             <h2 style={{ fontSize: '24px', color: 'var(--text-secondary)', fontWeight: 400, marginBottom: '32px' }}>
               {data.personal.role}

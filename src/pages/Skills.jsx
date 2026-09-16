@@ -52,6 +52,43 @@ const Skills = () => {
             &larr; Return to Base
           </Link>
         </div>
+        
+        {/* Homelab Section */}
+        <div className="glass-card" style={{ marginBottom: '60px', padding: '40px', borderRadius: '24px' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Monitor size={24} color="var(--accent-color)" /> Defensive Homelab Architecture
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '32px', lineHeight: '1.6' }}>
+            To continuously hone my detection engineering and incident response skills, I maintain a local Proxmox-based homelab. This environment allows me to detonate live malware, capture PCAPs, and write custom detection logic without relying on third-party cloud labs.
+          </p>
+          
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            gap: '16px',
+            background: 'rgba(0,0,0,0.3)',
+            padding: '24px',
+            borderRadius: '16px',
+            border: '1px dashed rgba(255,255,255,0.1)'
+          }}>
+            <div style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', borderLeft: '3px solid var(--accent-color)' }}>
+              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#fff' }}>Hypervisor</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Proxmox VE (Bare Metal)</div>
+            </div>
+            <div style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', borderLeft: '3px solid #ff3366' }}>
+              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#fff' }}>Red Team / Attack</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Kali Linux, Cobalt Strike (Sim)</div>
+            </div>
+            <div style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', borderLeft: '3px solid #00ff66' }}>
+              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#fff' }}>Blue Team / Defense</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Splunk Enterprise, Wazuh EDR</div>
+            </div>
+            <div style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', borderLeft: '3px solid #a855f7' }}>
+              <div style={{ fontWeight: '600', marginBottom: '8px', color: '#fff' }}>Victim Network</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Windows 11 (Sysmon), Ubuntu Server</div>
+            </div>
+          </div>
+        </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
           {data.skills.categories.map((cat, i) => (
